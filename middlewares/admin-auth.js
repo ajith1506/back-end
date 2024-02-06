@@ -43,47 +43,9 @@ isAdmin = (req, res, next) => {
     });
 };
 
-isCustomer = (req, res, next) => {
-  User.findById({ _id: req.userId })
-    .exec()
-    .then((user) => {
-      if (user.role == "CUSTOMER") {
-        next();
-        return;
-      }
-      res.status(401).json({ message: "Not Authorized" });
-    })
-    .catch((err) => {
-      console.log("Authorized  method Error" + err);
-      res.status(500).json({
-        error: err,
-      });
-    });
-};
-
-isMechanic = (req, res, next) => {
-  Member.findByid({ _id: req.userId })
-    .exec()
-    .then((user) => {
-      if (user.role == "MECHANIC") {
-        next();
-        return;
-      }
-      res.status(401).json({ message: "Not Authorized" });
-    })
-    .catch((err) => {
-      console.log("Authorized  method Error" + err);
-      res.status(500).json({
-        error: err,
-      });
-    });
-};
-
-const checkAuth = {
+const adminAuth = {
   verifyToken,
-  isCustomer,
   isAdmin,
-  isMechanic,
 };
 
-module.exports = checkAuth;
+module.exports = adminAuth;

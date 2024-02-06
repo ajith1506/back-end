@@ -117,7 +117,7 @@ exports.updateprofile = (req, res) => {
     });
 };
 
-exports.logins = (req, res, next) => {
+exports.customerlogin = (req, res, next) => {
   Customer.findOne({ email: req.body.email })
     .exec()
     .then((user) => {
@@ -164,7 +164,7 @@ exports.logins = (req, res, next) => {
     });
 };
 
-exports.registers = (req, res, next) => {
+exports.customerregister = (req, res, next) => {
   console.log("Inside Register");
   if (!req.body.name || !req.body.email || !req.body.password) {
     return res.status(400).json({ message: "All fields are required" });

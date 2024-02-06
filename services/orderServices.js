@@ -2,41 +2,50 @@
 
 const express = require("express");
 const router = express.Router();
-const checkAuth = require("../middlewares/check-auth");
 const OrderController = require("../controllers/orderController");
+const mechanicAuth = require("../middlewares/mechanic-auth");
+const orderAuth = require("../middlewares/order-auth");
+const customerAuth = require("../middlewares/customer-auth");
+const adminAuth = require("../middlewares/admin-auth");
 
 router.get(
   "/findPlacedOrder",
-  [checkAuth.verifyToken, checkAuth.isAdmin],
+  [adminAuth.verifyToken, adminAuth.isAdmin],
   OrderController.findPlacedOrders
 );
 
 router.patch(
   "/updateOrder/:orderId",
-  [checkAuth.verifyToken, checkAuth.isAdmin],
+  [adminAuth.verifyToken, adminAuth.isAdmin],
   OrderController.updateOrder
 );
 
 router.patch(
   "/updateOrder/:orderId",
-  [checkAuth.verifyToken, checkAuth.isMechanic],
+  [mechanicAuth.verifyToken, mechanicAuth.isMechanic],
   OrderController.updateOrder
 );
 
 router.get(
   "/findInProcessOrders/:mechId",
-  [checkAuth.verifyToken, checkAuth.isMechanic],
+  [mechanicAuth.verifyToken, mechanicAuth.isMechanic],
   OrderController.findInProcessOrders
 );
 
 router.get(
   "/findMyOrders/:mechId",
-  [checkAuth.verifyToken, checkAuth.isMechanic],
+  [mechanicAuth.verifyToken, mechanicAuth.isMechanic],
   OrderController.findMyOrders
 );
 
-router.post("/addOrder", [checkAuth.verifyToken], OrderController.addOrder);
+router.post("/addOrder", [orderAuth.verifyToken], OrderController.addOrder);
 
 router.get("/findCompletedOrders", OrderController.findCompltedOrders);
+
+router.get(
+  "/findOrders/:customerId",
+  [customerAuth.verifyToken, customerAuth.isCustomer],
+  OrderController.findMyOrders
+);
 
 module.exports = router;

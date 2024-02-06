@@ -1,33 +1,38 @@
 const express = require("express");
 const router = express.Router();
-const checkAuth = require("../middlewares/check-auth");
 const AccountController = require("../controllers/accountController");
+const customerAuth = require("../middlewares/customer-auth");
+const mechanicAuth = require("../middlewares/mechanic-auth");
 
-router.get("/findAll", checkAuth.verifyToken, AccountController.getAllCustomer);
+router.get(
+  "/findAll",
+  customerAuth.verifyToken,
+  AccountController.getAllCustomer
+);
 
 router.patch("/updateProfile/:custId", AccountController.findCustById);
 
 router.get(
   "/findCustById",
-  [checkAuth.verifyToken, checkAuth.isCustomer],
+  [customerAuth.verifyToken, customerAuth.isCustomer],
   AccountController.updateprofile
 );
 
 router.delete(
   "/deleteAccount/:custId",
-  [checkAuth.verifyToken, checkAuth.isCustomer],
+  [customerAuth.verifyToken, customerAuth.isCustomer],
   AccountController.deleteCustomer
 );
 
 router.patch(
   "/update/:mechId",
-  [checkAuth.verifyToken],
+  [mechanicAuth.verifyToken],
   AccountController.updateProfile
 );
 
 router.delete(
   "/delete/:mechId",
-  [checkAuth.verifyToken],
+  [mechanicAuth.verifyToken],
   AccountController.deleteProfile
 );
 
